@@ -1,0 +1,122 @@
+<!-- Defines the document type so variety of browsers can interpret the code the same way -->
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Population Density</title>
+		<link rel = "stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css"/>
+		
+		<style type = "text/css">
+			p.a {
+				font-family: "Times New Roman", Times, serif; font-size: 19px;
+			}
+			
+			.legend {line-height: 18px; color: 'white';
+			}
+			
+			.legend i {width: 18px; height: 18px; float: left;  margin-right: 8px; opacity: 0.9;
+			}
+			
+			.hbutton {  
+				margin-left: 124px;
+				margin-top: -80px;
+				width: 50px;
+				height: 70px;
+			}			
+			
+		</style> 
+		
+	</head>
+	
+	<body bgcolor = "#F4A460">
+	
+		<center><h1>2010 Population Density in King County</h1></center> 
+		<script src = "https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
+		
+		<!--add external GeoJSON source -->
+		<script src = "2010PopCT_area_1.geojson"></script>
+		<div id = "map" style = "width: 1000px; height: 500px; margin:auto;"></div>
+
+		<script> 
+		
+			var map = L.map('map', { center:[47.4040, -121.8570], zoom: 9});
+			L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+			//L.tileLayer('http://{s}.tile.thunderforest.com/Neighbourhood/{z}/{x}/{y}.png?apikey=9f4feb642310418f89b5787fca7bda52').addTo(map);
+
+			function classification(x){
+				return x > 5000? '#993404':
+					x > 4000? '#d95f0e':
+					x > 3000? '#fe9929':
+					x > 2000? '#fed98e':
+					x > 1000? '#ffffd4': '#a6bddb';
+			}
+					
+			function popStyle(feature){
+				return {fillColor:classification(feature.properties.E01003097/feature.properties.Area*1000000),
+					weight:1,
+					opacity:1,
+					color:'white',
+					fillOpacity:0.85};
+			} 
+
+			function newStyle(e) {var layer = e.target; layer.setStyle({weight:5});}
+			function oldStyle(e) {pop2010densityLayer.resetStyle(e.target);}
+			function popDensityhover(feature,layer){
+				layer.bindPopup('pop density: '+ feature.properties.E01003097/feature.properties.Area*1000000);
+				layer.on('mouseover', function(){layer.openPopup();});
+				layer.on('mouseover', newStyle);
+				layer.on('mouseout', oldStyle);
+				layer.on('mouseout', function(){layer.closePopup();});
+			}
+			
+			var legend = L.control({position:'bottomright'});
+				legend.onAdd = function(map){var div = L.DomUtil.create('div','info legend'),
+				grades = [1000, 2000, 3000, 4000, 5000], 
+				labels =[];
+				
+				for (var i = 0; i < grades.length; i++){
+                    div.innerHTML += '<i style="background: ' + classification(grades[i] + 1)+'"></i>'+ 
+                    grades[i] + (grades[i + 1]?'&ndash;' + (grades[i + 1] - 0.1) + '<br>':'+');}
+                     return div;
+                }
+				legend.addTo(map);
+				L.control.scale().addTo(map);
+			
+			var north = L.control({position: "topright"});
+				north.onAdd = function(map) {var div = L.DomUtil.create('div', 'info north-arrow');
+				div.innerHTML = '<img src = "nautical.svg">';
+				return div;
+			}
+			north.addTo(map);				
+			
+			/*function popDensity() {
+				pop2010densityLayer.addTo(map);
+			}*/
+			
+			//plot density in 2010 
+			var pop2010densityLayer = L.geoJSON(pop2010, {style:popStyle, onEachFeature: popDensityhover}).addTo(map);
+			//var pop2010 = L.geoJSON(pop2010).addTo(map);
+			
+			/*<div style = "text-align:center"><!-->Ought to be moved outside of script if wanting to add this button event. Function popDensity ought to be uncommented too.<-->
+				<button onclick = "popDensity()">Population Density</button>
+			</div>*/
+
+		</script>
+		
+		<div class = "float: right; hbutton">
+			<p>
+				<a href = "https://students.washington.edu/montej2/Portfolio.html" style = "color: black; font-size: 30px; float: right">
+					<h1>HOME</h1>
+				</a>
+			</p>
+		</div>
+		
+		<p class = "a": align = "center"><b>
+			In this map I applied previously learned concepts, only this time I learned how to edit geometries and their attributes using QGIS. 
+			We used QGIS to edit the data because the file, from the King County Data Hub, exceeded the capabilities of GeoJSON to edit data. 
+			The legend shows heavily populated areas in dark brown and less densely populated areas in light brown. The units are person per square kilometer.
+			The density levels that were not significant (less than 1000) were assigned the color gray. 
+		</p>
+				
+		
+	</body>
+</html>

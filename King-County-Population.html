@@ -1,0 +1,169 @@
+<!-- Defines the document type so variety of browsers can interpret the code the same way -->
+<!DOCTYPE html>
+<html>
+	<head>
+	
+		<title>Population in King County </title>
+		<link rel = "stylesheet" href = "https://unpkg.com/leaflet@1.3.4/dist/leaflet.css" />
+		
+		<style type = "text/css">
+			body {
+				font-family: "Times New Roman", Times, serif; font-size: 19px;
+				
+			}
+				
+			/*body {	
+				background-image: url("https://www.municipalworld.com/wp/wp-content/uploads/2018/03/agingpopulation.png");
+				background-repeat: repeat-x;	
+			}*/
+			
+			.image-container {
+				width: 500px;
+				height: 500px;
+				position: relative;
+			}
+			
+			.image-container img {
+				position: absolute;
+				right: 0;
+				left: 0;
+				top: 0;
+				bottom: 0;
+				margin: auto auto;
+			}
+
+			.image-container img {
+				max-height: 100%;
+				max-width: 100%;
+			}			
+			
+			.hbutton {  
+				margin-left: 75px;
+				margin-top: -130px;
+				width: 50px;
+				height: 70px;
+			}			
+			
+		</style>
+		
+	</head>
+	
+	<body bgcolor = "#efeee0">
+		<center><h1>2000 & 2010 Population in King County</h1></center>
+		<script src = "https://unpkg.com/leaflet@1.3.4/dist/leaflet.js"></script>
+		<script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>	
+		<script src = "KCPop2000.js"></script>
+					
+		<div id = "myMap" style = "width: 1000px; height: 500px; margin: auto"></div>
+		<br>
+		
+		<script>
+		
+			var map = L.map('myMap', {center:[47.4040, -121.8570], zoom: 9});
+			//var KCPop2000layer = L.geoJSON(myData).addTo(map);
+			L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+			//L.tileLayer('http://{s}.tile.thunderforest.com/Neighbourhood/{z}/{x}/{y}.png?apikey=9f4feb642310418f89b5787fca7bda52').addTo(map);
+			//L.tileLayer('http://{s}.tile.thunderforest.com/transport-dark/{z}/{x}/{y}.png?apikey=9f4feb642310418f89b5787fca7bda52').addTo(map);
+			//L.tileLayer('http://{s}.tile.thunderforest.com/landscape/{z}/{x}/{y}.png?apikey=9f4feb642310418f89b5787fca7bda52').addTo(map);
+			//L.tileLayer('http://{s}.tile.thunderforest.com/mobile-atlas/{z}/{x}/{y}.png?apikey=9f4feb642310418f89b5787fca7bda52').addTo(map);
+			 
+			function classificationBothPop(x){
+				return x > 5000? '#993404':
+				x > 4000? '#d95f0e':
+				x > 3000? '#fe9929':
+				x > 2000? '#fed98e':																									
+				x > 1000? '#ffffd4': '#ffffd4';
+			}
+			
+			function popStyle(feature){
+				return {fillColor: classificationBothPop(feature.properties.TotPop),
+				weight:1,
+				opacity:1,
+				color:'white',
+				fillOpacity:0.85};
+			}
+			
+			<!--Creates the 2000 population layer and its corresponding mouse hovering event>
+			function newStyle(e) {
+				var layer = e.target; layer.setStyle({weight: 5});
+			}
+			
+			function oldStyle(e) {
+				pop2000Layer.resetStyle(e.target);
+			}
+			
+			function popUp2000(feature, layer) {
+				layer.bindPopup('Census tract: ' + feature.properties.NAME + '<br>' + 'Total Population: ' + feature.properties.TotPop);
+				layer.on('mouseover', function(){layer.openPopup();});
+				layer.on('mouseover', newStyle);
+				layer.on('mouseout', oldStyle);
+				layer.on('mouseout', function(){layer.closePopup();});
+			}
+			
+			<!--Creates the 2010 population layer and its corresponding mouse hovering event>
+			function newStyle10(e) {
+				var layer = e.target; layer.setStyle({weight: 5});
+			}
+			
+			function oldStyle10(e) {
+				pop2010Layer.resetStyle(e.target);
+			}
+			
+			function popUp2010(feature, layer) {
+				layer.bindPopup('Census tract: ' + feature.properties.TRACT_LBL + '<br>' + 'Total Population: ' + feature.properties.E01003097);
+				layer.on('mouseover', function(){layer.openPopup();});
+				layer.on('mouseover', newStyle10);
+				layer.on('mouseout', oldStyle10);
+				layer.on('mouseout', function(){layer.closePopup();});
+			}
+			
+			<!--To add desired layers and remove unwanted ones to call the desired button>
+			function pop2000() {
+				pop2000Layer.addTo(map);
+				map.removeLayer(pop2010Layer);
+			}
+			
+			function pop2010() {
+				pop2010Layer.addTo(map);
+				map.removeLayer(pop2000Layer);
+			}
+			
+			var north = L.control({position: "topright"});
+				north.onAdd = function(map) {var div = L.DomUtil.create('div', 'info north-arrow');
+				div.innerHTML = '<img src = "nautical.svg">';
+				return div;
+			}
+			north.addTo(map);
+			
+			var pop2000Layer = L.geoJSON(myData, {style: popStyle, onEachFeature: popUp2000});
+			
+			var pop2010Layer = L.geoJSON(false, {style: function (feature){
+				return {fillColor: classificationBothPop(feature.properties.E01003097), weight: 1, opacity: 1, color: 'white', fillOpacity: 0.85}}, onEachFeature: popUp2010});
+				$.getJSON("https://opendata.arcgis.com/datasets/42ba035b52b14df3b9b16653e8a1e46c_2593.geojson", function(data){pop2010Layer.addData(data);});
+			
+			L.control.scale().addTo(map);
+			
+		</script>
+		
+		<div style = "text-align:center; padding-top: 0px; padding-bottom: 0px; margin: auto">
+			<button onclick = "pop2000()">Total Population in 2000 </button>
+			<button onclick = "pop2010()">Total Population in 2010</button>
+		</div>
+		
+		<div class = "hbutton">
+			<p>
+				<a href = "https://students.washington.edu/montej2/Portfolio.html" style = "color: black; font-size: 30px;">
+					<h1>HOME</h1>
+				</a>
+			</p>
+		</div>			
+		<br>
+		<p align = "center"><b>
+			With this map I learned two different ways to reference data. One way was to reference GeoJSON data locally saved as JavaScript files in my computer. 
+			The other method was loading data from a data sever outside of my hardware via URL from King County Open GIS Data HUB. Through making this map, I learned how to 
+			style data to produce a choropleth map, and how to allow users to go back and forth between data options (the buttons below the maps.) The population values are 
+			represented in the maps with lighter colors for small values and darker colors for larger values. Hint: To restart the original view, simply refresh the tab.
+		</p>			
+			
+	</body>
+</html>

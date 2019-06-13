@@ -1,0 +1,191 @@
+<!-- Defines the document type so variety of browsers can interpret the code the same way -->
+<!DOCTYPE html>
+<html>
+
+	<head>
+	
+		<title>Kids' Project</title>
+		<link rel = "stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css"/>
+		
+		<style type = "text/css">
+			p.a {
+				font-family: "Comic Sans MS", cursive, sans-serif;
+			}
+
+			.hbutton {  
+				margin-left: -1219px;
+				margin-top: -130px;
+				width: 50px;
+				height: 70px;
+			}
+			
+		</style>
+
+	</head>
+	
+	<body bgcolor = "yellow">
+		
+		<center><h1 style = "font-family: Comic Sans MS, cursive, sans-seriffont-size; font-size: 37"><b>Washington State, Counties, and Their Boundaries</h1></center>
+			
+		<!--<img src = "insertImage.png" alt = "kidsImage" width = "350" height = "250">
+		<img src = "title.png" align = "top" alt = "Washington State, Counties, and Their Boundaries" width = "790" height = "240">
+		<img src = "insertImage.png" align = "right" alt = "kidsImage" width = "350" height = "250">-->
+
+		<script src = "https://unpkg.com/leaflet@1.3.4/dist/leaflet.js"></script>	
+		<script src = "wa.js"></script>
+		<script src = "seattleArea.js"></script>
+		<script src = "cougarMountain.js"></script>
+		
+		<div id = "myMap" style = "width: 1000px; height: 455px; margin: auto;"></div>
+		<br>
+		<script>
+			var map = L.map('myMap', {center:[47.6062, -121.3321], zoom: 6});
+			L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+			
+			function classification(x) {
+				return x == "KING"? 'red': 'silver';
+			}
+			
+			function classificationSeattle(x) {
+				return x == 1? 'red': 'white';
+			}
+			
+			function classificationCougar(x) {
+				return x == 1? 'white': '#00b100';
+			}
+			
+			function popStyleCougar(feature){
+				return {fillColor: classificationCougar(feature.properties.boolean),
+				weight:1,
+				opacity:1,
+				color:'white',
+				fillOpacity:0.85};
+			}
+			
+			function popStyleSeattle(feature){
+				return {fillColor: classificationSeattle(feature.properties.boolean),
+				weight:1,
+				opacity:1,
+				color:'white',
+				fillOpacity:0.85};
+			}
+			
+			function popStyle(feature){
+				return {fillColor: classification(feature.properties.COUNTY),
+				weight:1,
+				opacity:1,
+				color:'white',
+				fillOpacity:0.85};
+			}
+			
+			//for Cougar Mountain layer
+			function newStyleCougar(e) {
+				var layer = e.target; layer.setStyle({weight: 5});
+			}
+			
+			function oldStyleCougar(e) {
+				cougarLayer.resetStyle(e.target);
+			}
+			
+			function cougar(feature, layer) {
+				layer.bindPopup('Attraction description: ' + feature.properties.name);
+				layer.on('mouseover', function(){layer.openPopup();});
+				layer.on('mouseover', newStyleCougar);
+				layer.on('mouseout', oldStyleCougar);
+				layer.on('mouseout', function(){layer.closePopup();});
+			}
+			
+			//for county layer
+			function newStyle(e) {
+				var layer = e.target; layer.setStyle({weight: 5});
+			}
+			
+			function oldStyle(e) {
+				countyLayer.resetStyle(e.target);
+			}
+			
+			function counties(feature, layer) {
+				layer.bindPopup('County name: '+ feature.properties.COUNTY);
+				layer.on('mouseover', function(){layer.openPopup();});
+				layer.on('mouseover', newStyle);
+				layer.on('mouseout', oldStyle);
+				layer.on('mouseout', function(){layer.closePopup();});
+			}
+			
+			//for Seattle layer
+			function newStyleSeattle(e) {
+				var layer = e.target; layer.setStyle({weight: 5});
+			}
+			
+			function oldStyleSeattle(e) {
+				seattlePopLayer.resetStyle(e.target);
+			}
+			
+			function seattleColor(feature, layer) {
+				layer.bindPopup('By the way: '+ feature.properties.seattle);
+				layer.on('mouseover', function(){layer.openPopup();});
+				layer.on('mouseover', newStyleSeattle);
+				layer.on('mouseout', oldStyleSeattle);
+				layer.on('mouseout', function(){layer.closePopup();});
+			}
+			
+			function popCougar() {
+				cougarLayer.addTo(map);
+				map.removeLayer(seattlePopLayer);
+				map.removeLayer(countyLayer);
+			}
+			
+			function popCounty() {
+				countyLayer.addTo(map);
+				map.removeLayer(seattlePopLayer);
+				map.removeLayer(cougarLayer);
+			}
+			
+			function Seattle() {
+				seattlePopLayer.addTo(map);
+				map.removeLayer(cougarLayer);
+				map.removeLayer(countyLayer);
+			}
+			
+			var north = L.control({position: "bottomright"});
+				north.onAdd = function(map) {var div = L.DomUtil.create('div', 'info north-arrow');
+				div.innerHTML = '<img src = "hip.svg">';
+				return div;
+			}
+			north.addTo(map);			
+			
+			var cougarLayer = L.geoJSON(coolPark, {style: popStyleCougar, onEachFeature: cougar});
+			var seattlePopLayer = L.geoJSON(seattleArea, {style: popStyleSeattle, onEachFeature: seattleColor});
+			var countyLayer = L.geoJSON(WA, {style: popStyle, onEachFeature: counties});
+			L.control.scale().addTo(map);
+
+		</script>
+		
+			<div align = "center">
+				<button onclick = "popCounty()">WA Counties</button>
+				<button onclick = "Seattle()">Seattle</button>
+				<button onclick = "popCougar()">King County's Attractions</button>
+			
+			
+			<div class = "hbutton">
+				<p><a href = "https://students.washington.edu/montej2/Portfolio.html">
+						<h1 style = "font: black; float: right; font-family: Comic Sans MS, cursive, sans-seriffont-size;">HOME</h1>
+					</a>
+				</p>
+			</div>		
+			
+			<br></br>
+			<p class = "a": align = "center"><b>
+				Hey Kids!
+				On this website you can learn some fun facts about the counties of our beautiful State of Washington and their boundaries.
+				Below the map are three buttons: WA Counties, Seattle, and King County's Attractions. Each button displays different fun and iconic places.
+				Start by clicking "WA Counties." Use King County as your starting point. It is highlighted in red, and the rest of the counties are in gray.
+				How many more counties can you name? You can hover the cursor over a county to find out its name. 
+				By clicking the "Seattle" button, the boundaries of this great city will be highlighted in the color red. You can hover the cursor over the red area to see a message.
+				By clicking the "King County's Attractions" button you can zoom in to find three fun attractions located in that county. 
+				Hint: all three attractions are highlighted in the color green. Two of them are in the northern part of Seattle, and the third is in the Southeast area of Bellevue.
+				You can hover the cursor over each attraction to see a short description of each one. Hint: To restart the original view, simply refresh the tab.
+			</p>
+						
+	</body>
+</html>

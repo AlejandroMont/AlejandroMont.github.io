@@ -1,0 +1,96 @@
+<!-- Defines the document type so variety of browsers can interpret the code the same way -->
+<!DOCTYPE html>
+<html>
+  
+  <!-- Starts the HTML header area -->
+  <head>
+    
+    <!-- Starts and ends the HTML title (appears on the browser title bar) -->
+    <title>Digital Geographies 2018</title>
+    
+    <!-- Declares styles for different elements of the webpage, using CSS syntax. Edit this stuff to customize your styling and feel free to add other style elements-->
+    <style type = "text/css">
+		html, body { height: 100%; margin: 0; padding: 25px 25px; background-color: FFFFFF; font-size: 19px}
+		#map { height: 80%; width: 80%; } /*this modifies the size of your Google map. You might consider changing this to make your map appear larger*/
+	  	p.a {font-family: "Times New Roman", Times, serif}	
+    </style>
+   
+  <!-- Ends the HTML header section -->  
+  </head>
+ 
+ <!-- Starts the HTML body area-->
+	<body bgcolor = "white">
+	
+		<div align = "center">
+			<img style = "-webkit-user-select: none;cursor: zoom-in;" 
+			src = "https://s3-us-west-2.amazonaws.com/uw-s3-cdn/wp-content/uploads/sites/98/2017/06/07212352/BoundlessBand_LeftAngleWordmarkW-HEX.png"
+			width = "1200" height = "128">
+		</div>
+		<br>
+		
+		<h2 align = "center">Digital Geographies Winter Quarter, 2018</h2>
+		<br>
+		
+		<!-- Displays the text at the top of the web page, title in bold Arial on left. You can adjust font and text size if you want. -->
+		<div id = "title1"
+		   <div style = "text-align: left; font-family: Arial; font-size: 17px; padding-top: 10px; padding-bottom: 20px;">
+		   The map below shows different soccer fields I have played in King County. I named it "The Soccer Tour"
+		</div>
+		
+	   <!-- below is the code needed for a basic Google Map. Modify this code by deleting the comment-out syntax, 
+	   inputing your own API key, and adjusting the center and zoom to make your Google Map appear. Also bring in the KMZ layer you made in Project 1, 
+	   and make additional enhancements of your choosing based on what you learned in Project 2.-->
+		<div id = "map"></div>
+		
+		<script type = "text/javascript">
+		
+			function initMap() {
+				map = new google.maps.Map(document.getElementById('map'), {center: {lat: 47.6097, lng: -122.3331}, zoom: 11});
+
+			<!--insert KMZ layer here by adding the URL to the KMZ file you uploaded to your webspace in Project 1-->
+				var kmz = new google.maps.KmlLayer({url: 'http://students.washington.edu/montej2/soccertourinkingcounty.kmz', map: map});
+			}
+			
+		</script>
+		<br></br>
+		   
+		<script async defer
+		  src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyDs2hmGvZ_GJ8NibDMjt7egpEAn-xIWBk4&callback=initMap">
+		</script>       
+		
+		<div id = "text2">
+			<div style = "text-align: left; font-family: Arial; font-size: 17px;">
+				<p>Below is a map of locally owned coffee shops around the U-District</p>
+		</div> 
+			
+			<div class = "hbutton">
+				<p>
+					<a href = "https://students.washington.edu/montej2/Portfolio.html">
+						<h1 style = "float: right">HOME</h1>
+					</a>
+				</p>			
+			</div>								
+		   
+		<!-- Link to my carto map -->
+		<iframe 
+			width = "80%" height = "520" frameborder = "0" src = "https://alejandromont.carto.com/builder/0406a3b4-0c25-4462-b25e-75f16171b7f3/embed">
+		</iframe>
+		
+			<p class = "a"><b>
+				This project contains two maps I created using different platforms, Google MyMaps and Fulcrum. "The Soccer Tour" was created by inputting in an 
+				Excel sheet data such as latitude and longitude from each Soccer field, a short description of the place, and a secondary description like the link 
+				of the facilities or park where these soccer fields are located. All these attributes are displayed when the user clicks on one of the blue icons. 
+				The blue line on "The Soccer Tour" map shows a route from the beginning point of the tour to the furthest point. The distance between these 
+				two points is about 12.2 miles.<br> 
+				The second map was created using an app called Fulcrum to create the data, and Carto to create the map. To collect the data for the coffee shops 
+				my project partner and I went to each place to take a photo of the shop using the Fulcrum app and to rate the coziness level. The criteria for 
+				coziness level was previously established based on studying space and the type of art on the walls. 
+			</p>
+			<br>
+		<!-- Ends the HTML body area -->  
+	</body>
+
+<!--This document was written by Emma Slager, PhD student at the University of Washington-->
+
+<!-- Ends the HTML file -->  
+</html>
