@@ -31,15 +31,15 @@
 		<h2 align = "center">Digital Geographies Winter Quarter, 2018</h2>
 		<br>
 		
-		<!-- Displays the text at the top of the web page, title in bold Arial on left. You can adjust font and text size if you want. -->
+		<!-- Displays the text at the top of the web page, title in bold Arial on left. You can adjust font and text size if you want. 
 		<div id = "title1"
 		   <div style = "text-align: left; font-family: Arial; font-size: 17px; padding-top: 10px; padding-bottom: 20px;">
 		   The map below shows different soccer fields I have played in King County. I named it "The Soccer Tour"
-		</div>
+		</div>-->
 		
 	   <!-- below is the code needed for a basic Google Map. Modify this code by deleting the comment-out syntax, 
 	   inputing your own API key, and adjusting the center and zoom to make your Google Map appear. Also bring in the KMZ layer you made in Project 1, 
-	   and make additional enhancements of your choosing based on what you learned in Project 2.-->
+	   and make additional enhancements of your choosing based on what you learned in Project 2.
 		<div id = "map"></div>
 		
 		<script type = "text/javascript">
@@ -47,12 +47,11 @@
 			function initMap() {
 				map = new google.maps.Map(document.getElementById('map'), {center: {lat: 47.6097, lng: -122.3331}, zoom: 11});
 
-			<!--insert KMZ layer here by adding the URL to the KMZ file you uploaded to your webspace in Project 1-->
+			<!--insert KMZ layer here by adding the URL to the KMZ file you uploaded to your webspace in Project 1
 				var kmz = new google.maps.KmlLayer({url: 'http://students.washington.edu/montej2/soccertourinkingcounty.kmz', map: map});
 			}
 			
-		</script>
-		<br></br>
+		</script>-->
 		   
 		<script async defer
 		  src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyDs2hmGvZ_GJ8NibDMjt7egpEAn-xIWBk4&callback=initMap">
@@ -60,33 +59,28 @@
 		
 		<div id = "text2">
 			<div style = "text-align: left; font-family: Arial; font-size: 17px;">
-				<p>Below is a map of locally owned coffee shops around the U-District</p>
+				<h3>Below is a map of locally owned coffee shops around the U-District</h3>
 		</div> 
-			
-			<div class = "hbutton">
-				<p>
-					<a href = "index">
-						<h1 style = "float: right">HOME</h1>
-					</a>
-				</p>			
-			</div>								
-		   
+		
+		<div class = "hbutton">
+			<p>
+				<a href = "index">
+					<h1 style = "float: right">HOME</h1>
+				</a>
+			</p>			
+		</div>
+		
 		<!-- Link to my carto map -->
 		<iframe 
 			width = "80%" height = "520" frameborder = "0" src = "https://alejandromont.carto.com/builder/0406a3b4-0c25-4462-b25e-75f16171b7f3/embed">
 		</iframe>
 		
-			<p class = "a"><b>
-				This project contains two maps I created using different platforms, Google MyMaps and Fulcrum. "The Soccer Tour" was created by inputting in an 
-				Excel sheet data such as latitude and longitude from each Soccer field, a short description of the place, and a secondary description like the link 
-				of the facilities or park where these soccer fields are located. All these attributes are displayed when the user clicks on one of the blue icons. 
-				The blue line on "The Soccer Tour" map shows a route from the beginning point of the tour to the furthest point. The distance between these 
-				two points is about 12.2 miles.<br> 
-				The second map was created using an app called Fulcrum to create the data, and Carto to create the map. To collect the data for the coffee shops 
-				my project partner and I went to each place to take a photo of the shop using the Fulcrum app and to rate the coziness level. The criteria for 
-				coziness level was previously established based on studying space and the type of art on the walls. 
-			</p>
-			<br>
+		<p class = "a"><b>
+			This project contains a map I created using two apps. Fulcrum was used to create the data and Carto to visualize it. To collect the data for the coffee 
+			shops my project partner and I went to each place to take a photo of the shop using the Fulcrum app and to rate the coziness level. 
+			The criteria for coziness level was previously established based on studying space and the type of art on the walls. 
+		</p>
+		<br>	
 		<!-- Ends the HTML body area -->  
 	</body>
 
