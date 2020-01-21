@@ -96,7 +96,7 @@
 				var popMedLayer = L.geoJSON(false, {style: function (feature){
 				return {fillColor: classificationMed(feature.properties.MHHI1), weight: 1, opacity: 1, color: 'white', fillOpacity: 0.85}}, onEachFeature: popUpMed}).addTo(map);
 				$.getJSON("https://opendata.arcgis.com/datasets/294c704e32734e8ebcd030e535b841ce_25491201.geojson", function(data) {popMedLayer.addData(data);});		
-			
+				
 			</script>
 			
 			<div class = "hbutton">
